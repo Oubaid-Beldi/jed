@@ -1,0 +1,35 @@
+** command "grep -i <pattern>" **
+
+Tool to search for text patterns in files or output
+The -i option means: ignore case (uppercase/lowercase doesn't matter)
+
+🔍 So:
+
+grep -i "linux" file.txt
+
+Will match: linux, Linux, LINUX, etc.
+
+⚠️ Notes:
+    Without -i, grep is case-sensitive
+    You can combine it with other options like -r (recursive) or -n (line number)
+
+🧪 Example:
+
+dmesg | grep -i error
+
+➡️ Finds all lines in system logs that contain “error” (any case)
+
+** command "sort -n" **
+
+Tool to sort lines of text numerically (by number, not alphabetically)
+
+🔢 Normally, sort treats values as text, so:
+
+sort file.txt
+
+Would sort: 1, 10, 2 ➡️ wrong order
+But:
+
+sort -n file.txt
+
+Sorts: 1, 2, 10 ✅ correct numerical order

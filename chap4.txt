@@ -1,0 +1,85 @@
+Linux identifies disks as devices, typically named /dev/sda, /dev/sdb, etc. For example:
+
+    /dev/sda → First hard drive
+    /dev/sdb → Second hard drive
+
+2. What is a File System? 🗃️
+
+A file system is the method Linux uses to store and organize files on a disk. It defines how data is written and retrieved. Some common file systems in Linux are:
+
+    ext4 📂 (most common)
+    NTFS (used by Windows)
+    FAT32 (older file system)
+    XFS 🗂️ (used in enterprise systems)
+
+Each file system has its own structure for managing files and directories, with specific rules about file naming, permissions, and how the files are stored.
+
+3. Mounting a File System 🛠️
+
+Before using a disk or a partition, you need to mount it into the Linux file system. Mounting means connecting the file system of a disk or partition to a directory so it can be accessed.
+
+For example:
+
+    The root file system (/) is mounted on the first disk, usually /dev/sda1.
+    You can mount other disks (like /dev/sdb1) to directories like /mnt or /media.
+
+Command to mount:
+
+"
+> sudo mount /dev/sdb1 /mnt
+"
+
+This mounts the partition /dev/sdb1 to the /mnt directory, making it accessible.
+
+
+4. Directory Structure 🌳
+
+Linux uses a tree structure for its file system, starting from the root directory /. Some important directories include:
+
+    /bin 🏃: Essential system programs (e.g., ls, cp)
+    /home 🏡: User data (e.g., /home/user1)
+    /etc ⚙️: Configuration files
+    /var 📊: Variable data (log files, databases)
+    /mnt 🛠️: Mount point for temporary storage devices
+
+
+6. Disk Partitioning ⚙️
+
+Partitioning is dividing a physical disk into sections so each section can hold a file system. You can partition a disk to organize data better and prevent one file system from affecting another.
+
+To check your partitions, you can use the "fdisk" or "lsblk" (ls block) command:
+
+
+7. Checking Disk Space 📊
+
+To check disk usage, you can use the df (disk free) command:
+
+"
+> df -h
+"
+
+This shows the disk space usage for each mounted file system in a human-readable format (e.g., GB, MB).
+
+Example Workflow 🏃‍♂️:
+
+    Plug in an external disk. It appears as /dev/sdb1.
+    Mount the disk to /mnt:
+
+"
+> sudo mount /dev/sdb1 /mnt
+"
+
+You can now access the files on that disk under /mnt.
+To unmount the disk:
+
+"
+> sudo umount /mnt
+"
+
+TP EXPLANATION:
+
+| Type              | Source | Speed     | Measures                     |
+| ----------------- | ------ | --------- | ---------------------------- |
+| Cached Reads 🔄   | RAM    | Very fast | Memory/cache performance     |
+| Buffered Reads 📀 | Disk   | Slower    | Actual disk read performance |
+

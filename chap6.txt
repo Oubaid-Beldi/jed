@@ -1,0 +1,147 @@
+📦 Package Management (Gestion de Paquetage)
+
+"Gestion de paquetage" means managing software packages on a Linux system.
+It includes installing, updating, removing, and searching for software.
+
+Linux uses package managers to automate this process.
+
+| System Type   | Package Format | Command-Line Tools  |
+| ------------- | -------------- | ------------------- |
+| Debian/Ubuntu | `.deb`         | `apt`, `dpkg`       |
+| RedHat/CentOS | `.rpm`         | `dnf`, `yum`, `rpm` |
+| Arch Linux    | custom         | `pacman`            |
+
+🧪 Examples with apt (Debian/Ubuntu):
+
+    🔍 Search for a package:
+"
+    > apt search firefox
+"
+    📥 Install:
+"
+    > sudo apt install firefox
+"
+    ♻️ Update all packages:
+"
+    > sudo apt update && sudo apt upgrade
+"
+    ❌ Remove:
+"
+    > sudo apt remove firefox
+"
+
+✅ Advantages of Package Management:
+
+    Ensures compatibility and security
+    Resolves dependencies automatically
+    Keeps system organized and clean
+
+📦 1. dpkg (Debian Package Manager)
+
+Used on Debian-based systems like Ubuntu for managing .deb files.
+
+🛠️ Basic commands:
+
+    Install a .deb file:
+"
+    > sudo dpkg -i package.deb
+"
+    Fix broken dependencies:
+"
+    > sudo apt -f install
+"
+    Remove a package:
+"
+    > sudo dpkg -r packagename
+"
+    List installed packages:
+"
+    > dpkg -l
+"
+
+⚠️ Doesn't automatically install dependencies like apt does.
+
+📦 2. snap (Snapcraft Packages)
+
+Used to install containerized apps (bundled with their dependencies). Works across many distros.
+
+🛠️ Commands:
+
+    Install:
+"
+    > sudo snap install packagename
+"
+    List installed snaps:
+"
+    > snap list
+"
+    Remove:
+"
+    > sudo snap remove packagename
+"
+✅ Benefits:
+
+    Auto-updates
+
+    Isolated (sandboxed) for security
+
+    Same command works on Ubuntu, Fedora, Arch, etc.
+
+⚠️ Uses more disk space than apt
+
+📦 3. tar (Archive Utility, not a package manager)
+
+
+tar is used for compressing or extracting files and directories, not managing packages.
+
+🛠️ Common commands:
+
+    Extract a .tar.gz archive:
+"
+    > tar -xvzf archive.tar.gz
+"
+    Create an archive:
+"
+    > tar -cvzf myfiles.tar.gz folder/
+"
+✅ Often used to distribute source code or portable applications.
+
+⚠️ No automatic installation — you must compile/install manually if needed.
+
+** command "sudo apt update" **
+
+Used to update the package lists from the repositories in a Debian-based Linux system (like Ubuntu).
+
+🔄 What it does:
+
+    Fetches the latest available package lists from the repositories (online sources like official Ubuntu servers).
+    Ensures your system knows about the latest versions of software packages available for installation or upgrade.
+
+🧰 When to use:
+
+    Before installing or upgrading packages to make sure you get the latest versions.
+
+dpkg:
+-i <.deb file> : install package from .deb file
+-l: list installed packages
+-s <package> : info about package
+-S <path> : whats the package in the path
+-L <package> : all the files downloaded by package
+-r <package> : delete package
+-P <package> : purge package
+
+
+apt-get:
+
+    update : Fetches the latest package information from the repositories
+    upgrade : Upgrades all installed packages to their latest versions
+    dist-upgrade : Upgrades the system, handling new dependencies (install/removes packages as needed)
+    install <package> : Installs the specified package
+    remove <--purge> <package> : Removes the package (keeps configuration files)
+    purge <package> : Completely removes the package, including its configuration files
+    autoremove : Removes unused packages that were automatically installed and are no longer needed
+    clean : Clears out the local repository of downloaded package files
+    autoclean : Removes outdated packages that can no longer be downloaded
+
+snap:
+    

@@ -1,0 +1,99 @@
+Chap 3: Gestion droit d'access
+
+👤 User Types:
+
+    Owner (user): the person who created the file.
+    Group: a group of users who share access.
+    Others: everyone else.
+
+🔐 Permission Types:
+
+    r (read): Can view the contents.
+    w (write): Can modify the contents.
+    x (execute): Can run the file (if it's a program or script) or access the directory.
+
+> ls -l script.sh
+> -rwxr-xr-- 1 alice devs 1234 May 10 12:00 script.sh
+
+This means:
+
+    -: It's a file (not a directory). if its a directory you see "d"
+    rwx: The owner (alice) can read, write, and execute.
+    r-x: The group (devs) can read and execute, but not write.
+    r--: Others can only read the file.
+
+🔧 Changing Permissions:
+
+You can use chmod, chown, and chgrp.
+
+1. Octal (numeric) notation — e.g., chmod 755 file.txt
+Each permission is represented by a number:
+_______________________
+| Permission  | Value |
+| ----------- | ----- |
+| `r` (read)  | 4     |
+| `w` (write) | 2     |
+| `x` (exec)  | 1     |
+| `-` (none)  | 0     |
+
+2. Symbolic notation — e.g., chmod u+x file.txt
+
+This method uses letters and symbols:
+    u = user (owner)
+    g = group
+    o = others
+    a = all (or you can leave it empty)
+And:
+    + = add permission
+    - = remove permission
+    = = set exactly
+
+Change owner:
+> chown bob script.sh
+
+Change group:
+> chgrp admins script.sh
+
+What is umask?
+
+The umask (user file creation mask) is a system setting that controls the default permissions given to newly created files and directories. It essentially masks (removes) certain permissions from the default permissions when creating files or directorie
+
+How umask Works:
+
+The umask value is subtracted from these default values to determine the final permissions for a new file or directory.
+
+For example:
+
+    If umask is 0022, it means the system will remove write permissions for the group and others when creating files or directories.
+
+        For files: Default permissions = 666, umask = 0022 → Resulting permissions = 644 (rw-r--r--)
+
+        For directories: Default permissions = 777, umask = 0022 → Resulting permissions = 755 (rwxr-xr-x)
+
+How to read umask:
+
+    umask value: 022
+        User (owner): 0 (no permission masked)
+        Group: 2 (write permission removed)
+        Others: 2 (write permission removed)
+
+How to Calculate the Mask (umask):
+
+    Default permissions:
+        For files: 666 → (rw-rw-rw-)
+        For directories: 777 → (rwxrwxrwx)
+
+    Desired permissions:
+        For files: 761 → (rwx rw- --x)
+        For directories: 761 → (rwx rw- --x)
+
+    To get the umask:
+        Subtract the desired permissions from the default permissions.
+
+    For files (using 777 as the default):
+
+        Desired: 761 → rwx rw- --x
+        Subtracting 761 from 777:
+            777 - 761 = 0016
+
+        -> So the umask is 0016.

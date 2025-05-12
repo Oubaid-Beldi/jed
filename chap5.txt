@@ -1,0 +1,156 @@
+** command "fdisk /dev/<disk>" **
+
+"> p" > print, show partition table of our disk
+"> d" > deletes a partition
+"> n" > new partition
+"> t" > change the type of a partition
+"> w" > write changes (save)
+
+** verifier les partition visible par le noyau **
+
+"
+> cat /proc/partitions | grep sdb
+"
+
+** command "parted /dev/<disk>" **
+
+"> print" > shows the partition table
+
+** command "<sudo> mkfs -t(type) <type> <disk>" **
+
+-b taille block
+-c check bad blocks
+-i octes/inodes
+-m reserved % for the root (default 5%)
+-L label
+-j journal
+------- vFAT only:
+-F taille vFAT
+-I auth usage of entire disk
+-n nom disk vFAT
+-v afficher les details
+
+This command erases all data on <disk>. It reformats the partition with a new <type> file system.
+
+** command "<sudo> tune2fs -j(journal) <disk>" **
+tune2fs -O ^has_journal <disk>
+Tool to adjust tunable parameters of ext2/ext3/ext4 filesystems
+A journal improves reliability and crash recovery.
+⚠️ Before using this:
+    Make sure /dev/sdb6 is not mounted (or mounted read-only).
+
+** command "e2label <disk>" or "sudo e2label <disk> <label>" **
+
+Tool to view or set the label (name) of an ext2/ext3/ext4 filesystem
+A label makes it easier to identify or mount partitions by name (instead of device path)
+
+⚠️ Before using this:
+ • Works only on ext2/ext3/ext4 file systems
+ • Label must be 16 characters or fewer
+ • You can mount with: mount -L <label> /mnt
+
+** command "mount <device> <mount_point>" **
+
+mount -t type -o [ro,rw] periph point_mont
+-U <uuid> mount using uuid
+
+sudo mount -o option1,option2,... <device> <mount_point>
+| Option | Meaning                    |
+| ------ | -------------------------- |
+| `ro`   | Mount read-only            |
+| `rw`   | Mount read-write (default) |
+| ------- | ------------------------------------------- |
+| `(no)user`  | Allow a **normal user** to mount the device |
+| `auto` | mount again auto         |
+| `noauto` | --              |
+| -------- | ------------------------------------ |
+| `noexec` | Prevent running executables          |
+| `exec`   | Allow execution (default)            |
+| `nosuid` | Ignore set-user-ID or set-group-ID   |
+| `suid`   | Allow suid/guid programs (default)   |
+| `nodev`  | Ignore device files                  |
+| `dev`    | Allow device files (default on root) |
+| ---------- | ------------------------------------------- |
+| `sync`     | Writes are done immediately (slower, safer) |
+| `async`    | Writes are cached (default, faster)         |
+| remount | if already mount |
+
+
+
+Tool to attach (mount) a file system (like a partition, USB drive, or ISO) to a specific directory in the Linux file system tree
+
+📌 After mounting, the contents of the device become accessible at the mount point
+Example:
+
+sudo mount /dev/sdb1 /mnt
+
+➡️ Mounts the partition /dev/sdb1 to the /mnt directory
+
+⚠️ Before using this:
+ • The mount point must exist (create it with mkdir if needed)
+ • The device must contain a valid file system
+ • May require sudo for permission
+ • To mount by label: mount -L <label> /mnt
+ • To view current mounts: mount or findmnt
+
+** command "df" or "df -h" **
+
+Tool to display disk space usage of mounted file systems
+
+🧾 Shows:
+
+    Total size, used and available space
+    Mount point (where the file system is attached)
+    Device name (e.g. /dev/sda1)
+
+✅ Commonly used options:
+
+    -h: Human-readable (shows sizes in MB/GB)
+
+** command "du" or "du -h" **
+
+Tool to estimate disk space usage of files and directories
+
+🧾 Shows how much space is used by a directory and its contents
+
+✅ Commonly used options:
+
+    -m: Megabytes
+    -h: Human-readable (KB, MB, GB)
+    -s: Summary (just the total for the directory)
+    -a: Show all files and directories
+    --max-depth=N: Limit depth of displayed subdirectories
+
+** command "sudo fsck <device>" **
+
+Tool to check and repair consistency errors in a Linux file system
+(stands for: File System ChecK)
+
+🛠️ It scans for:
+
+    Corrupted inodes
+    Lost or bad blocks
+    Incorrect file links
+    Unclean shutdown effects
+
+✅ Common usage:
+
+sudo fsck /dev/sdb1
+➡️ Checks the file system on /dev/sdb1
+
+⚠️ Before using this:
+
+    NEVER run fsck on a mounted file system (can cause damage)
+    Boot into recovery mode or use umount first
+    Automatically fixes issues with -y:
+
+** command "sudo tune2fs -C <count> <disk>" → e.g. sudo tune2fs -C 1000 /dev/sdb6 **
+
+Tool to manually set the mount count of an ext2/ext3/ext4 file system
+
+🛠️ Used to simulate frequent usage or force a file system check on next boot
+✅ What it does:
+
+    -C 1000: sets the mount count to 1000
+    When the mount count reaches or exceeds the max mount count (e.g. 30), fsck will auto-run during boot
+    Good for testing or forcing fsck
